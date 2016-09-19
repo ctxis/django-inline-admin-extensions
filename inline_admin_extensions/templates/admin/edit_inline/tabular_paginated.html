@@ -1,0 +1,12 @@
+{% load inline_admin_paginator %}
+{% load i18n %}
+
+{% include "admin/edit_inline/tabular.html" %}
+
+<div id="changelist">
+{% with inline_admin_formset.formset.cl as cl %}
+    {% if cl.paginator %}
+	{% tabular_inline_pagination cl %}
+    {% endif %}
+{% endwith %}
+</div>
