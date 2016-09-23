@@ -8,3 +8,5 @@ class Author(models.Model):
 class Book(models.Model):
    author = models.ForeignKey(Author, on_delete=models.CASCADE)
    wololol = models.CharField(max_length=100)
+   title = models.CharField(max_length=100)
+   isbn = models.CharField(max_length=100)

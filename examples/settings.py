@@ -1,5 +1,6 @@
 import os
 
+DEBUG = True
 
 SECRET_KEY = 'MAGICALSECRET'
 
@@ -10,6 +11,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.sessions',
+    'django.contrib.staticfiles',
     'django.contrib.admin',
 ]
 

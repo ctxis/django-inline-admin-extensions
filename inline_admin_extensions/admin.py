@@ -1,5 +1,6 @@
 from django.contrib import admin
-from django.contrib.admin.views.main import ChangeList
+from django.contrib.admin.views.main import ChangeList, ORDER_VAR
+from django.core import exceptions
 from django.core.paginator import EmptyPage, InvalidPage, Paginator
 
 
@@ -14,7 +15,7 @@ class InlineChangeList(object):
         self.page_param = page_param
         self.paginator = paginator
         self.result_count = paginator.count
-        self.params = dict(request.GET.items())
+        self.params = request.GET
 
 
 def pagination_formset_factory(formset_class, request, **cls_attrs):
@@ -58,14 +59,38 @@ class PaginationInline(admin.TabularInline):
     def page_param(self):
         return self.model.__name__.lower()
 
+    @property
+    def order_param(self, prefix=ORDER_VAR):
+        return '_'.join([prefix, self.model.__name__.lower()])
+
     def get_formset(self, request, obj=None, **kwargs):
         formset_class = super(PaginationInline, self).get_formset(
             request, obj, **kwargs)
 
-        pagination_formset = pagination_formset_factory(
+        return pagination_formset_factory(
             formset_class,
             request,
             per_page=self.per_page,
             page_param=self.page_param,
+            order_param=self.order_param,
         )
-        return pagination_formset
+
+    def get_queryset(self, request):
+        queryset = super(PaginationInline, self).get_queryset(request)
+        return queryset
+
+    def get_ordering(self, request):
+        ordering = super(PaginationInline, self).get_ordering(request)
+        if self.order_param not in request.GET:
+            return ordering
+
+        ordering = []
+        order_params = request.GET.getlist(self.order_param)
+        for p in order_params:
+            none, pfx, idx = p.rpartition('-')
+            try:
+                self.model._meta.get_field(idx)
+                ordering.append(p)
+            except exceptions.FieldDoesNotExist:
+                pass
+        return ordering

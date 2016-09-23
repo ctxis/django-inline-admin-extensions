@@ -1,12 +1,17 @@
+{% extends "admin/edit_inline/tabular.html" %}
 {% load inline_admin_paginator %}
 {% load i18n %}
 
-{% include "admin/edit_inline/tabular.html" %}
+{% block table_headers %}
+  {% table_header_row inline_admin_formset %}
+{% endblock %}
 
+{% block paginator %}
 <div id="changelist">
 {% with inline_admin_formset.formset.cl as cl %}
-    {% if cl.paginator %}
-	{% tabular_inline_pagination cl %}
-    {% endif %}
+  {% if cl.paginator %}
+    {% tabular_inline_pagination cl %}
+  {% endif %}
 {% endwith %}
 </div>
+{% endblock %}
