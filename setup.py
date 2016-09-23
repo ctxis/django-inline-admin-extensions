@@ -10,7 +10,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name='django-inline-admin-extensions',
     version='0.1',
-    packages=['inline_admin_extensions'],
+    packages=['inline_admin_extensions', 'inline_admin_extensions.templatetags'],
     include_package_data=True,
     license='BSD License',
     description='Django inline admin extras - pagination sortin.',
@@ -35,4 +35,5 @@ setup(
     install_requires=[
         'Django>=1.8'
     ],
+    include_package_data=True,
 )
