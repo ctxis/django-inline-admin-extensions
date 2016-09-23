@@ -13,6 +13,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'django_extensions',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -23,6 +25,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'examples.middleware.AtopdedTo110DebugMiddleware',
 ]
 
 TEMPLATES = [
@@ -46,5 +50,8 @@ ROOT_URLCONF = 'examples.urls'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'test.db',
     }
 }
+
+STATIC_URL = '/static/'

@@ -1,1 +1,1 @@
-recursive-include inline_admin_extensions/templates/*.html
+recursive-include inline_admin_extensions/templates/admin *.html

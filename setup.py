@@ -35,5 +35,4 @@ setup(
     install_requires=[
         'Django>=1.8'
     ],
-    include_package_data=True,
 )
