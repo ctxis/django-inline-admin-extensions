@@ -79,6 +79,9 @@ def get_toggle_remove_urls(formset, ordering):
     return toggle_remove_urls
 
 
+SortableField = namedtuple('SortableField', ['name', 'field', 'urls'])
+
+
 @register.inclusion_tag('admin/edit_inline/tabular_header_row.html')
 def table_header_row(inline_admin_formset):
     '''Similar to InlineAdminFormSet.fields but also returns field name
@@ -100,17 +103,12 @@ def table_header_row(inline_admin_formset):
 
     fields = []
     for field_name, field in zip(field_names, inline_admin_formset.fields()):
-        field['name'] = field_name
         try:
-            sorting_url = toggle_remove_urls[field_name]
-            field.update({
-                'toggle_url': sorting_url.toggle,
-                'remove_url': sorting_url.remove,
-                'sort': sorting_url.sort
-            })
+            urls = toggle_remove_urls[field_name]
         except KeyError:
-            field['toggle_url'] = get_updated_url(formset, None, field_name)
-        fields.append(field)
+            toggle = get_updated_url(formset, None, field_name)
+            urls = SortingUrl('', toggle, '')
+        fields.append(SortableField(field_name, field, urls))
 
     return {
         'fields': fields,
