@@ -3,6 +3,7 @@ This is a copy of admin/edit_inline/tabular.html with some blocks added.
 Customizations should be made to admin/edit_inline/tabular_paginated.html
 This makes coping with changes to the django template easier.
 {% endcomment %}
+{% load inline_admin_paginator %}
 {% load i18n admin_urls static admin_modify %}
 <div class="js-inline-admin-formset inline-group" id="{{ inline_admin_formset.formset.prefix }}-group"
      data-inline-type="tabular"
@@ -81,3 +82,17 @@ This makes coping with changes to the django template easier.
 </fieldset>
   </div>
 </div>
+
+{%  django_version as version %}
+{% if version.0 == 1 and version.1 < 10 %}
+<script type="text/javascript">
+
+(function($) {
+  $("#{{ inline_admin_formset.formset.prefix|escapejs }}-group .tabular.inline-related tbody tr").tabularFormset({
+    prefix: "{{ inline_admin_formset.formset.prefix|escapejs }}",
+    addText: "{% filter escapejs %}{% blocktrans with inline_admin_formset.opts.verbose_name|capfirst as verbose_name %}Add another {{ verbose_name }}{% endblocktrans %}{% endfilter %}",
+    deleteText: "{% filter escapejs %}{% trans 'Remove' %}{% endfilter %}"
+  });
+})(django.jQuery);
+</script>
+{% endif %}

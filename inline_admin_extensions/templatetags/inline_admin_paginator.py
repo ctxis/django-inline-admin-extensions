@@ -2,6 +2,7 @@ from collections import namedtuple
 import copy
 import types
 
+import django
 from django.template import Library
 from django.contrib.admin.templatetags.admin_list import (
     paginator_number,
@@ -114,3 +115,8 @@ def table_header_row(inline_admin_formset):
         'fields': fields,
         'formset': formset,
     }
+
+
+@register.simple_tag
+def django_version():
+    return django.VERSION
