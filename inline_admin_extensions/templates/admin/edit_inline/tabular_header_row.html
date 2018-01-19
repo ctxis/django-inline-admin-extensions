@@ -3,18 +3,18 @@
   <th class="original"></th>
   {% for sortable_field in fields %}
     {% if not sortable_field.field.widget.is_hidden %}
-      <th class="{% if sortable_field.field.required %} required{% endif %} sorted">
-	 <div class="text">
-           <a href="?{{ sortable_field.urls.toggle }}">{{ sortable_field.field.label|capfirst }}</a>
+    <th class="{% if sortable_field.field.required %} required{% endif %} sorted">
+      <div class="sortoptions">
+        {% if sortable_field.urls.sort %}
+          <a class="sortremove" href="?{{ sortable_field.urls.remove_url }}"></a>
+          <a class="toggle {{ sortable_field.urls.sort }}" href="?{{ sortable_field.urls.toggle }}"></a>
+        {% endif %}
+      </div>
+      <div class="text">
+        <a href="?{{ sortable_field.urls.toggle }}">{{ sortable_field.field.label|capfirst }}</a>
         {% if sortable_field.field.help_text %}&nbsp;<img src="{% static "admin/img/icon-unknown.svg" %}" class="help help-tooltip" width="10" height="10" alt="({{ sortable_field.field.help_text|striptags }})" title="{{ sortable_field.field.help_text|striptags }}" />{% endif %}
-	 </div>
-	<div class="sortoptions">
-          {% if sortable_field.urls.sort %}
-            <a class="sortremove" href="?{{ sortable_field.urls.remove_url }}"></a>
-            <a class="toggle {{ sortable_field.urls.sort }}" href="?{{ sortable_field.urls.toggle }}"></a>
-          {% endif %}
-	</div>
-       </th>
+      </div>
+    </th>
     {% endif %}
   {% endfor %}
   {% if formset.can_delete %}<th>{% trans "Delete?" %}</th>{% endif %}
